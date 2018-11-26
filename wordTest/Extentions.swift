@@ -3,7 +3,7 @@
 //  wordTest
 //
 //  Created by Habib on 11/12/18.
-//  Copyright © 2018 Habib. All rights reserved.
+//  Copyright © 2018 Habib. All rights reserved
 //
 
 

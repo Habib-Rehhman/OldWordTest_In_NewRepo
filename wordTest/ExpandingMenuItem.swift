@@ -2,7 +2,7 @@
 //  ExpandingMenuButtonItem.swift
 //
 //  Created by monoqlo on 2015/07/17.
-//  Copyright (c) 2015年 monoqlo All rights reserved.
+//  Copyright (c) 2015年 monoqlo All rights reserved
 //
 import ARKit
 import UserNotifications
