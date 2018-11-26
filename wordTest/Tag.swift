@@ -15,6 +15,8 @@ class Adapter {
     
     static var item: ExpandingMenuItem?
     
+    static var tagArray: [LocationTag] = []
+    
 }
 
 

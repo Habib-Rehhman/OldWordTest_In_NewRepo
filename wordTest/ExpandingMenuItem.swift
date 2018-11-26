@@ -26,7 +26,7 @@ open class ExpandingMenuItem: UIView {
         }
     }
     
-    var tagArray: [LocationTag] = []
+   
     
     
     
@@ -196,7 +196,11 @@ open class ExpandingMenuItem: UIView {
             inputText.delegate = Adapter.AR! //as? UITextFieldDelegate
             Adapter.AR!.ARView.addSubview(inputText)
             Adapter.item = self
-    }
+        }else if(self.index==1){
+            handleShowPaths()
+        }else{
+            print("Index Not Found")
+        }
         
         
         self.tappedAction?()
@@ -217,13 +221,12 @@ open class ExpandingMenuItem: UIView {
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
             return
         }
-        tagArray.append(LocationTag(name: showText, point: SCNVector3Make(currentPositionOfCamera.x, currentPositionOfCamera.y-1, currentPositionOfCamera.z)))
-        for ind in 0 ..< tagArray.count{
-            
-            for innerInd in ind ..< tagArray.count-1{
+        Adapter.tagArray.append(LocationTag(name: showText, point: SCNVector3Make(currentPositionOfCamera.x, currentPositionOfCamera.y-1, currentPositionOfCamera.z)))
+        for ind in 0 ..< Adapter.tagArray.count-1{
                 
-                tagArray[innerInd].addConnection(to: tagArray[innerInd+1], bidirectional: true, weight: distanceBetweenVectors(v1: tagArray[innerInd].point, v2: tagArray[innerInd+1].point))
-            }
+                Adapter.tagArray.last!.addConnection(to: Adapter.tagArray[ind], bidirectional: true, weight: distanceBetweenVectors(v1: Adapter.tagArray[ind].point, v2: Adapter.tagArray[ind+1].point))
+              print("\nAdding connection from '\(Adapter.tagArray.last!.name)' to '\(Adapter.tagArray[ind].name)'\n")
+            
         }
         let text = SCNText(string: showText, extrusionDepth: 1)
         print("not returned")
@@ -256,26 +259,28 @@ open class ExpandingMenuItem: UIView {
     
     
     // MARK: handleShowPath
-    func handleShowPaths(_ sender: Any) {
+    func handleShowPaths() {
         
         //This block removes previous arrows
         Adapter.AR!.ARView.scene.rootNode.enumerateChildNodes { (node, stop) in
-            if (node.name != nil && (node.name!.elementsEqual("arrow") || node.name!.elementsEqual("cam"))){
+            if (node.name != nil && (node.name!.elementsEqual("arrow"))){
                 node.removeFromParentNode()
-                
             }
         }
         let tagGraph = GKGraph()
         //This block adds new arrows
-        if(tagArray.count>0){
-            tagGraph.add(tagArray)
-            tagArray.append(LocationTag(name: "cam", point: SCNVector3Make(currentPositionOfCamera.x, currentPositionOfCamera.y, currentPositionOfCamera.z)))
+        if(Adapter.tagArray.count>0){
             
-            let nearest = calculateNearestNode(cam: tagArray[tagArray.count-1].point)
-            tagArray[tagArray.count-1].addConnection(to: nearest, bidirectional: true, weight: distanceBetweenVectors(v1: tagArray[tagArray.count-1].point, v2: nearest.point))
+            tagGraph.add(Adapter.tagArray)
+//          Adapter.tagArray.append(LocationTag(name: "cam", point: SCNVector3Make(currentPositionOfCamera.x, currentPositionOfCamera.y, currentPositionOfCamera.z)))
+            let camTag = LocationTag(name: "cam", point: SCNVector3Make(currentPositionOfCamera.x, currentPositionOfCamera.y, currentPositionOfCamera.z))
+            let nearest = calculateNearestNode(cam: camTag.point)
+           camTag.addConnection(to: nearest, bidirectional: true, weight: distanceBetweenVectors(v1: Adapter.tagArray[Adapter.tagArray.count-1].point, v2: nearest.point))
             
+            drawPath(from: camTag.point , to: nearest.point)
+
             
-            var path = tagGraph.findPath(from: tagArray[tagArray.count-1], to: tagArray[2]) //will crash if the length is less then 3
+             var path = tagGraph.findPath(from: nearest, to: Adapter.tagArray[2])
             for p in 0 ..< path.count-1 {
                 
                 print("\((path[p] as! LocationTag).name) -> \((path[p+1] as! LocationTag).name), Edge Cost: ")
@@ -321,12 +326,12 @@ open class ExpandingMenuItem: UIView {
     
     func calculateNearestNode(cam: SCNVector3) -> LocationTag
     {
-        var nearest = distanceBetweenVectors(v1: tagArray[0].point, v2: cam)
+        var nearest = distanceBetweenVectors(v1: Adapter.tagArray[0].point, v2: cam)
         var dis: Float
         var haveIndx = 0
-        for i in 1 ..< tagArray.count-1
+        for i in 1 ..< Adapter.tagArray.count-1
         {
-            dis = distanceBetweenVectors(v1: tagArray[i].point, v2: cam)
+            dis = distanceBetweenVectors(v1: Adapter.tagArray[i].point, v2: cam)
             if(dis < nearest){
                 
                 haveIndx = i
@@ -334,7 +339,7 @@ open class ExpandingMenuItem: UIView {
             }
             
         }
-        return tagArray[haveIndx]
+        return Adapter.tagArray[haveIndx]
     }
     
     
