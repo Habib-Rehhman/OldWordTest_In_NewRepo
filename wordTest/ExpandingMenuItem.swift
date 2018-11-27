@@ -12,9 +12,9 @@ import UIKit
 open class ExpandingMenuItem: UIView {
     
     
-    
+   
     var inputText =  UITextField(frame: CGRect(x: 20, y: 100, width: 300, height: 40))
-    
+    let navigationField = SearchTextField(frame: CGRect(x: 20, y: 100, width: 300, height: 40))
     var currentPositionOfCamera: SCNVector3
     {
         get{
@@ -188,8 +188,6 @@ open class ExpandingMenuItem: UIView {
             inputText.returnKeyType = UIReturnKeyType.done
             inputText.clearButtonMode = UITextField.ViewMode.whileEditing;
             inputText.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
-            inputText.keyboardType = UIKeyboardType.default
-            inputText.returnKeyType = UIReturnKeyType.done
             inputText.clearsOnBeginEditing = true
             inputText.becomeFirstResponder()
             inputText.tag = 23
@@ -197,7 +195,39 @@ open class ExpandingMenuItem: UIView {
             Adapter.AR!.ARView.addSubview(inputText)
             Adapter.item = self
         }else if(self.index==1){
-            handleShowPaths()
+          
+            navigationField.backgroundColor = UIColor.white
+            navigationField.borderStyle = UITextField.BorderStyle.roundedRect
+            navigationField.placeholder = "Where to?"
+            navigationField.keyboardType = UIKeyboardType.default
+            navigationField.returnKeyType = UIReturnKeyType.done
+            navigationField.clearsOnBeginEditing = true
+            navigationField.becomeFirstResponder()
+            navigationField.tag = 24
+            navigationField.highlightAttributes = [NSAttributedString.Key.backgroundColor: UIColor.red, NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 12)]
+
+            let header = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 30))
+            header.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+            header.textAlignment = .center
+            header.font = UIFont.boldSystemFont(ofSize: 14)//.systemFont(ofSize: 15)
+            header.textColor = UIColor.red
+            header.text = "Pick A Stop"
+            navigationField.resultsListHeader = header
+            
+            
+            navigationField.itemSelectionHandler = {tem, itemPosition in
+                self.navigationField.text = tem[itemPosition].title
+            }
+            
+            
+            
+            //navigationField.startVisible = true
+            navigationField.forceNoFiltering = false
+            navigationField.delegate = Adapter.AR! //as? UITextFieldDelegate
+            Adapter.AR!.ARView.addSubview(navigationField)
+            Adapter.item = self
+            navigationField.filterStrings(Adapter.stopsArray)
+            //handleShowPaths()
         }else{
             print("Index Not Found")
         }
@@ -222,6 +252,7 @@ open class ExpandingMenuItem: UIView {
             return
         }
         Adapter.tagArray.append(LocationTag(name: showText, point: SCNVector3Make(currentPositionOfCamera.x, currentPositionOfCamera.y-1, currentPositionOfCamera.z)))
+        Adapter.stopsArray.append(Adapter.tagArray.last!.name)
         for ind in 0 ..< Adapter.tagArray.count-1{
                 
                 Adapter.tagArray.last!.addConnection(to: Adapter.tagArray[ind], bidirectional: true, weight: distanceBetweenVectors(v1: Adapter.tagArray[ind].point, v2: Adapter.tagArray[ind+1].point))
@@ -259,7 +290,7 @@ open class ExpandingMenuItem: UIView {
     
     
     // MARK: handleShowPath
-    func handleShowPaths() {
+    func handleShowPaths(drawTo: Int) {
         
         //This block removes previous arrows
         Adapter.AR!.ARView.scene.rootNode.enumerateChildNodes { (node, stop) in
@@ -280,7 +311,7 @@ open class ExpandingMenuItem: UIView {
             drawPath(from: camTag.point , to: nearest.point)
 
             
-             var path = tagGraph.findPath(from: nearest, to: Adapter.tagArray[2])
+             var path = tagGraph.findPath(from: nearest, to: Adapter.tagArray[drawTo])
             for p in 0 ..< path.count-1 {
                 
                 print("\((path[p] as! LocationTag).name) -> \((path[p+1] as! LocationTag).name), Edge Cost: ")
@@ -329,7 +360,7 @@ open class ExpandingMenuItem: UIView {
         var nearest = distanceBetweenVectors(v1: Adapter.tagArray[0].point, v2: cam)
         var dis: Float
         var haveIndx = 0
-        for i in 1 ..< Adapter.tagArray.count-1
+        for i in 1 ..< Adapter.tagArray.count
         {
             dis = distanceBetweenVectors(v1: Adapter.tagArray[i].point, v2: cam)
             if(dis < nearest){

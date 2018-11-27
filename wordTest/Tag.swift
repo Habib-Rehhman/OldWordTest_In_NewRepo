@@ -17,6 +17,8 @@ class Adapter {
     
     static var tagArray: [LocationTag] = []
     
+    static  var stopsArray: [String] = []
+    
 }
 
 

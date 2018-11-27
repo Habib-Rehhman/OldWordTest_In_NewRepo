@@ -14,7 +14,7 @@ import ARKit
 class LocationTag: GKGraphNode {
     let name: String
     let point: SCNVector3
-    //var travelCost: [GKGraphNode: Float] = [:]
+    var travelCost: [GKGraphNode: Float] = [:]
     
     init(name: String, point: SCNVector3) {
         self.name = name
@@ -34,7 +34,7 @@ class LocationTag: GKGraphNode {
     
     func addConnection(to node: GKGraphNode, bidirectional: Bool = true, weight: Float) {
         self.addConnections(to: [node], bidirectional: bidirectional)
-//       // travelCost[node] = weight
+//        travelCost[node] = weight
 //        guard bidirectional else { return }
 //        (node as? LocationTag)?.travelCost[self] = weight
     }
@@ -42,10 +42,10 @@ class LocationTag: GKGraphNode {
 
 
 
-func printCost(for path: [GKGraphNode]) {
-    var total: Float = 0
-    for i in 0..<(path.count-1) {
-        total += path[i].cost(to: path[i+1])
-    }
-    print(total)
-}
+//func printCost(for path: [GKGraphNode]) {
+//    var total: Float = 0
+//    for i in 0..<(path.count-1) {
+//        total += path[i].cost(to: path[i+1])
+//    }
+//    print(total)
+//}
