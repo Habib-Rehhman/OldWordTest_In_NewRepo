@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "wordTest/ExpandingMenuButton.swift"
-            timestampString = "564912222.266835"
+            timestampString = "564997111.57199"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "183"
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "wordTest/ExpandingMenuItem.swift"
-            timestampString = "564989064.164631"
+            timestampString = "564997111.572049"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "288"
-            endingLineNumber = "288"
+            startingLineNumber = "287"
+            endingLineNumber = "287"
             landmarkName = "updateAct(showText:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "wordTest/ExpandingMenuItem.swift"
-            timestampString = "564989064.164938"
+            timestampString = "564997111.572373"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "250"
-            endingLineNumber = "250"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
             landmarkName = "updateAct(showText:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,13 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "wordTest/ViewController.swift"
-            timestampString = "564989064.1651371"
+            timestampString = "564997111.572611"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "333"
-            endingLineNumber = "333"
-            landmarkName = "textFieldShouldReturn(_:)"
-            landmarkType = "7">
+            startingLineNumber = "339"
+            endingLineNumber = "339">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -74,7 +72,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "wordTest/ExpandingMenuItem.swift"
-            timestampString = "564989064.16552"
+            timestampString = "564997111.57286"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "218"

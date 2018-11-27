@@ -16,16 +16,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate {
     // MARK: Properties
    
     @IBOutlet weak var ARView: ARSCNView!
-//     var currentPositionOfCamera: SCNVector3
-//    {
-//        get{
-//            let pointOfView = ARView.pointOfView!
-//            let transform = pointOfView.transform
-//            let orientation = SCNVector3(-transform.m31,-transform.m32,-transform.m33)
-//            let location = SCNVector3(transform.m41,transform.m42,transform.m43)
-//            return orientation + location
-//        }
-//    }
 
     var tagArray: [LocationTag] = []
     
@@ -39,7 +29,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate {
         menu()
         
     }
-    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+        if let viewWithTag = Adapter.AR!.ARView.viewWithTag(23) {
+            viewWithTag.removeFromSuperview()
+            
+        }
+    }
         func menu()
         {
             let menuButtonSize: CGSize = CGSize(width: 64.0, height: 64.0)
@@ -60,81 +56,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate {
             menuButton.addMenuItems([dropPin,navigation])
         }
     
-//    
-//    @IBAction func handleShowPaths(_ sender: Any) {
-//
-//        //This block removes previous arrows
-//        self.ARView.scene.rootNode.enumerateChildNodes { (node, stop) in
-//            if (node.name != nil && (node.name!.elementsEqual("arrow") || node.name!.elementsEqual("cam"))){
-//            node.removeFromParentNode()
-//
-//            }
-//        }
-//        let tagGraph = GKGraph()
-//        //This block adds new arrows
-//         if(tagArray.count>0){
-//            tagGraph.add(tagArray)
-//            tagArray.append(LocationTag(name: "cam", point: SCNVector3Make(currentPositionOfCamera.x, currentPositionOfCamera.y, currentPositionOfCamera.z)))
-//
-//            let nearest = calculateNearestNode(cam: tagArray[tagArray.count-1].point)
-//                tagArray[tagArray.count-1].addConnection(to: nearest, bidirectional: true, weight: distanceBetweenVectors(v1: tagArray[tagArray.count-1].point, v2: nearest.point))
-//
-//
-//            var path = tagGraph.findPath(from: tagArray[tagArray.count-1], to: tagArray[2]) //will crash if the length is less then 3
-//           for p in 0 ..< path.count-1 {
-//
-//            print("\((path[p] as! LocationTag).name) -> \((path[p+1] as! LocationTag).name), Edge Cost: ")
-//              drawPath(from: (path[p] as! LocationTag).point , to: (path[p+1] as! LocationTag).point)
-//
-//            }
-//    }
-//    }
-//    func calculateNearestNode(cam: SCNVector3) -> LocationTag
-//    {
-//        var nearest = distanceBetweenVectors(v1: tagArray[0].point, v2: cam)
-//        var dis: Float
-//        var haveIndx = 0
-//        for i in 1 ..< tagArray.count-1
-//        {
-//             dis = distanceBetweenVectors(v1: tagArray[i].point, v2: cam)
-//            if(dis < nearest){
-//
-//                haveIndx = i
-//                nearest = dis
-//            }
-//
-//        }
-//        return tagArray[haveIndx]
-//    }
-//    func drawPath(from: SCNVector3, to: SCNVector3)// tag: String)
-//    {
-//        let distancePieces =  integer_t(((distanceBetweenVectors(v1: from, v2: to))/0.15).rounded(.up))
-//        var i = 1
-//        var multiple: Float = 0
-//        var node: LineNode
-//        var lerp = SCNVector3Zero
-//        var frm = from
-//        while(i <= distancePieces)
-//        {
-//
-//            lerp = frm.lerp(toVector: to, t: 0.15 * multiple)//(float_t(i) * 0.15).rounded(.up))
-//
-//            if(i % 2 != 0 )
-//            {
-//               // print(i)
-//                node = LineNode(v1: frm, v2: lerp)
-//                node.name = "arrow"
-//                self.ARView.scene.rootNode.addChildNode(node)
-//              //  print("distance is \(frm.distance(toVector: lerp))")
-//
-//            }
-//            frm = lerp
-//            i = i+1
-//            multiple = multiple + 0.15;
-//        }
-//
-//    }
-//
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let configuration = ARWorldTrackingConfiguration()
@@ -144,58 +66,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         ARView.session.pause()
     }
-//
-//    func updateAct(showText: String) {
-//
-//        if(showText.isEmpty)
-//        {
-//            //show text enter notification
-//            let content = UNMutableNotificationContent()
-//            content.title = "Metro Station Map"
-//            content.body =  " Enter the Stop Name to add"
-//            content.sound = UNNotificationSound.default
-//            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.2, repeats: false)
-//            let request = UNNotificationRequest(identifier: "TestIdentifier", content: content, trigger: trigger)
-//            UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
-//        return
-//        }
-//        tagArray.append(LocationTag(name: showText, point: SCNVector3Make(currentPositionOfCamera.x, currentPositionOfCamera.y-1, currentPositionOfCamera.z)))
-//        for ind in 0 ..< tagArray.count{
-//
-//            for innerInd in ind ..< tagArray.count-1{
-//
-//                tagArray[innerInd].addConnection(to: tagArray[innerInd+1], bidirectional: true, weight: distanceBetweenVectors(v1: tagArray[innerInd].point, v2: tagArray[innerInd+1].point))
-//            }
-//        }
-//        let text = SCNText(string: showText, extrusionDepth: 1)
-//        print("not returned")
-//        let material = SCNMaterial()
-//        material.diffuse.contents = UIColor.green
-//        text.materials = [material]
-//
-//        let node = SCNNode()
-//        node.position = currentPositionOfCamera
-//        node.scale = SCNVector3(x:0.01,y:0.01,z:0.01)
-//        node.geometry = text
-//        let eulerAngles = self.ARView.session.currentFrame?.camera.eulerAngles
-//        node.eulerAngles = SCNVector3(eulerAngles!.x, eulerAngles!.y, eulerAngles!.z + .pi / 2)
-//
-//
-//        //notification
-//        let content = UNMutableNotificationContent()
-//        content.title = "Metro Station Map"
-//        content.body =  " Stop added successfuly!"
-//        content.sound = UNNotificationSound.default // These paranthesis are necessary for swift 3, for 4 no parenthesis
-//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.2, repeats: false)
-//        let request = UNNotificationRequest(identifier: "TestIdentifier", content: content, trigger: trigger)
-//        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
-//
-//        self.ARView.scene.rootNode.addChildNode(node)
-//
-//
-//
-//        }
-//
     
     }
 
@@ -216,7 +86,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate {
     }
 
     
-
+// OUT
 class LineNode: SCNNode
 {
     init(
@@ -344,4 +214,4 @@ extension ViewController {
     
 }
 
-// MARK: UITextFieldDelegate <---
+ //MARK: UITextFieldDelegate <---

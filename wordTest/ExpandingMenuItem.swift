@@ -1,9 +1,14 @@
 //
-//  ExpandingMenuButtonItem.swift
+//  ExpandingMenuItem.swift
+//  wordTest
 //
-//  Created by monoqlo on 2015/07/17.
-//  Copyright (c) 2015年 monoqlo All rights reserved
-//
+//  Created by Habib on 11/11/18.
+//  Copyright © 2018 Habib. All rights reserved
+
+
+
+
+
 import ARKit
 import UserNotifications
 import GameKit
@@ -299,11 +304,11 @@ open class ExpandingMenuItem: UIView {
             }
         }
         let tagGraph = GKGraph()
-        //This block adds new arrows
+  
         if(Adapter.tagArray.count>0){
             
             tagGraph.add(Adapter.tagArray)
-//          Adapter.tagArray.append(LocationTag(name: "cam", point: SCNVector3Make(currentPositionOfCamera.x, currentPositionOfCamera.y, currentPositionOfCamera.z)))
+//
             let camTag = LocationTag(name: "cam", point: SCNVector3Make(currentPositionOfCamera.x, currentPositionOfCamera.y, currentPositionOfCamera.z))
             let nearest = calculateNearestNode(cam: camTag.point)
            camTag.addConnection(to: nearest, bidirectional: true, weight: distanceBetweenVectors(v1: Adapter.tagArray[Adapter.tagArray.count-1].point, v2: nearest.point))
@@ -375,4 +380,3 @@ open class ExpandingMenuItem: UIView {
     
     
 }
-

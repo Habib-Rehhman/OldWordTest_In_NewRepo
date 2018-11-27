@@ -1,9 +1,12 @@
 //
 //  ExpandingMenuButton.swift
+//  wordTest
 //
-//  Created by monoqlo on 2015/07/21.
-//  Copyright (c) 2015年 monoqlo All rights reservEd
-//
+//  Created by Habib on 11/11/18.
+//  Copyright © 2018 Habib. All rights reserved
+
+
+
 import ARKit
 
 import UserNotifications
@@ -145,9 +148,6 @@ open class ExpandingMenuButton: UIView, UIGestureRecognizerDelegate {
             tapGesture.delegate = self
             self.bottomView.addGestureRecognizer(tapGesture)
             
-//            self.expandingSoundPath = Bundle(url: Bundle(for: ExpandingMenuButton.classForCoder()).url(forResource: "ExpandingMenu", withExtension: "bundle")!)?.path(forResource: "expanding", ofType: "caf")
-//            self.foldSoundPath = Bundle(url: Bundle(for: ExpandingMenuButton.classForCoder()).url(forResource: "ExpandingMenu", withExtension: "bundle")!)?.path(forResource: "fold", ofType: "caf")
-//            self.selectedSoundPath = Bundle(url: Bundle(for: ExpandingMenuButton.classForCoder()).url(forResource: "ExpandingMenu", withExtension: "bundle")!)?.path(forResource: "selected", ofType: "caf") 
         }
         
         // Configure enter and highlighted center image
